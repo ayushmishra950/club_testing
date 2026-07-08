@@ -378,7 +378,7 @@ export function ChatPanel({ open, onClose }: Props) {
   };
 
   if (!open) return null;
-  console.log("activeChat", activeChat);
+  console.log(activeChat?.friend?.profileImage);
   return (
     <>
     <DeleteCard

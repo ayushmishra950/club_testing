@@ -9,7 +9,6 @@ import rateLimit from "express-rate-limit";
 import http from "http";
 import passport from "./utils/google.fb.login.js"
 import session from 'express-session';
-import helmet from "helmet";
 import path from "path"; 
 import { fileURLToPath } from "url"; 
 
@@ -70,7 +69,6 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(helmet());
 
 // admin route
 app.use("/api/admin/auth", adminAuthRoutes);
@@ -103,24 +101,25 @@ app.use("/api/user/review", userReviewRoutes);
 app.use("/api/user/block", userBlockRoutes);
 app.use("/api/user/password", resetPasswordRoutes);
 
-// ==========================================
+
+ // ==========================================
 // FRONTEND & ADMIN BUILD ROUTING LOGIC (NO-STAR CATCH-ALL)
-// ==========================================
-const adminBuildPath = path.join(__dirname, "../admin_build");
-const userBuildPath = path.join(__dirname, "../user_build");
+ // ==========================================
+ const adminBuildPath = path.join(__dirname, "../admin_build");
+ const userBuildPath = path.join(__dirname, "../user_build");
 
-app.use("/admin", express.static(adminBuildPath));
-app.use(express.static(userBuildPath));
+ app.use("/admin", express.static(adminBuildPath));
+ app.use(express.static(userBuildPath));
 
-app.use((req, res) => {
-  if (req.path.startsWith("/admin")) {
-    return res.sendFile(path.join(adminBuildPath, "index.html"));
-  }
+ app.use((req, res) => {
+   if (req.path.startsWith("/admin")) {
+     return res.sendFile(path.join(adminBuildPath, "index.html"));
+   }
 
   return res.sendFile(path.join(userBuildPath, "index.html"));
-});
+ });
 
-// ==========================================
+ // ==========================================
 
 const port = process.env.PORT || 5000;
 
