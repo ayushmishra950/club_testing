@@ -10,11 +10,9 @@ import http from "http";
 import passport from "./utils/google.fb.login.js"
 import session from 'express-session';
 import helmet from "helmet";
-import dns from "dns";
-import path from "path"; // 1. path मॉड्यूल इंपोर्ट किया
-import { fileURLToPath } from "url"; // ES Modules के लिए ज़रूरी
+import path from "path"; 
+import { fileURLToPath } from "url"; 
 
-// ES Modules में __dirname सेट करने के लिए
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
