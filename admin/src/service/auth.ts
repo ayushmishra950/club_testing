@@ -1,0 +1,134 @@
+import api from "@/api/axios";
+
+const base_url = import.meta.env.VITE_BACKEND_URL;
+
+export const registerUser = async (obj: any) => {
+    const res = await api.post(`${base_url}/user/auth/register`, obj);
+    return res;
+};
+
+
+export const loginUser = async (obj: any) => {
+    const res = await api.post(`${base_url}/user/auth/login`, obj);
+    return res;
+}
+
+
+
+export const updateUser = async (obj: any) => {
+    const res = await api.put(`${base_url}/user/auth/update`, obj);
+    return res;
+}
+
+
+
+export const getSingleUser = async (id: string) => {
+    const res = await api.get(`${base_url}/user/auth/getbyid/${id}`);
+    return res;
+}
+
+
+
+
+//=====================================admin k liye hai y===========================================
+//==================================================================================================
+
+export const loginAdmin = async (obj: any) => {
+    const res = await api.post(`${base_url}/admin/auth/login`, obj);
+    return res;
+}
+
+
+export const getAdmin = async (id: string) => {
+    const res = await api.get(`${base_url}/admin/auth/getbyid/${id}`);
+    return res;
+}
+
+
+export const updateAdmin = async (id: string, obj: any) => {
+    const res = await api.put(`${base_url}/admin/auth/update/${id}`, obj);
+    return res;
+}
+
+
+
+
+export const getAllUser = async ({ page, perPage, search, filterStatus }) => {
+    const res = await api.get(`${base_url}/admin/user/get`, { params: { page, perPage, search, filterStatus } });
+    return res;
+}
+
+
+export const verifyUser = async (memberIds: string[]) => {
+    const res = await api.patch(`${base_url}/admin/user/verify`, { memberIds });
+    return res;
+}
+
+
+
+export const verifyBusinessUser = async (obj: any) => {
+    const res = await api.post(`${base_url}/admin/user/business/verify`, obj);
+    return res;
+}
+
+
+
+export const deletedUser = async (id: string) => {
+    const res = await api.delete(`${base_url}/admin/user/delete/${id}`);
+    return res;
+}
+
+
+
+export const activeAndInactiveUser = async (id: string, status: boolean) => {
+    const res = await api.patch(`${base_url}/admin/user/active/inactive/${id}`, { status });
+    return res;
+}
+
+export const addNewUser = async (obj: any) => {
+    const res = await api.post(`${base_url}/admin/user/add`, obj);
+    return res;
+}
+
+export const uploadExcel = async (obj: any) => {
+    const res = await api.post(`${base_url}/admin/user/upload-excel`, obj, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+    return res;
+};
+
+export const acceptPaymentRequest = async (obj: any) => {
+    const res = await api.post(`${base_url}/admin/user/accept-payment`, obj);
+    return res;
+};
+
+export const updateUserByAdmin = async (id: string, obj: any) => {
+    const res = await api.put(`${base_url}/admin/user/update/${id}`, obj);
+    return res;
+};
+
+
+export const addBusinessUser = async (obj: any) => {
+    const res = await api.post(`${base_url}/admin/user/business/add`, obj);
+    return res;
+};
+
+
+export const adminConvertPremiumUser = async (obj: any) => {
+    const res = await api.patch(`${base_url}/admin/user/convert/premium`, obj);
+    return res;
+}; 
+
+
+export const approveDeleteRequest = async(id:string) => {
+    const res = await api.patch(`${base_url}/admin/user/delete/request/approve/${id}`);
+    return res;
+};
+
+
+export const recoverAccount = async(id:string) => {
+    const res = await api.patch(`${base_url}/admin/user/delete/request/cancel/${id}`);
+    return res;
+}
