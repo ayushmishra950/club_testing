@@ -4,7 +4,7 @@ import Admin from "../models/admin.model.js"; // ✅ NEW
 import Message from "../models/message.model.js";
 import Chat from "../models/chat.model.js";
 import FriendRequest from "../models/friendRequest.model.js";
-import Notification from "../models/notification.model.js";
+import Notification, { NotificationType } from "../models/notification.model.js";
 import Group from "../models/group.model.js";
 import jwt from "jsonwebtoken";
 const getUnreadCount = async (userId) => {
@@ -138,15 +138,15 @@ export const initSocket = (server) => {
                     return;
                 const admin = await Admin.findById(userId);
                 if (admin) {
-                    await Notification.updateMany({ type: "suggestion", isRead: false }, { $set: { isRead: true } });
-                    await Notification.updateMany({ type: "new_user", isRead: false }, { $set: { isRead: true } });
+                    await Notification.updateMany({ type: NotificationType.SUGGESTION, isRead: false }, { $set: { isRead: true } });
+                    await Notification.updateMany({ type: NotificationType.NEW_USER, isRead: false }, { $set: { isRead: true } });
                 }
                 else {
                     await Notification.updateMany({ receiver: userId, isRead: false }, { $set: { isRead: true } });
-                    await Notification.updateMany({ type: "announcement", isRead: false }, { $set: { isRead: true } });
+                    await Notification.updateMany({ type: NotificationType.ANNOUNCEMENT, isRead: false }, { $set: { isRead: true } });
                 }
                 const notifications = await Notification.find({
-                    $or: [{ receiver: userId }, { type: "announcement" }, { type: "suggestion" }]
+                    $or: [{ receiver: userId }, { type: NotificationType.ANNOUNCEMENT }, { type: NotificationType.SUGGESTION }]
                 })
                     .populate("sender", "fullName profileImage")
                     .populate("receiver", "fullName profileImage")

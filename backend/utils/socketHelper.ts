@@ -180,11 +180,11 @@ export const initSocket = (server: HTTPServer) => {
 
         if (admin) {
           await Notification.updateMany(
-            { type: "suggestion", isRead: false },
+            { type:  NotificationType.SUGGESTION, isRead: false },
             { $set: { isRead: true } }
           );
           await Notification.updateMany(
-            { type: "new_user", isRead: false },
+            { type:  NotificationType.NEW_USER, isRead: false },
             { $set: { isRead: true } }
           );
         } else {
@@ -194,13 +194,13 @@ export const initSocket = (server: HTTPServer) => {
           );
 
           await Notification.updateMany(
-            { type: "announcement", isRead: false },
+            { type: NotificationType.ANNOUNCEMENT, isRead: false },
             { $set: { isRead: true } }
           );
         }
 
         const notifications = await Notification.find({
-          $or: [{ receiver: userId }, { type: "announcement" }, { type: "suggestion" }]
+          $or: [{ receiver: userId }, { type: NotificationType.ANNOUNCEMENT }, { type: NotificationType.SUGGESTION }]
         })
           .populate("sender", "fullName profileImage")
           .populate("receiver", "fullName profileImage")

@@ -198,7 +198,6 @@ UserSchema.index({ email: 1 }, { unique: true, sparse: true, partialFilterExpres
 UserSchema.index({ mobile: 1 }, { unique: true, sparse: true, partialFilterExpression: { mobile: { $exists: true } } });
 UserSchema.index({ spouseEmail: 1 }, { unique: true, sparse: true, partialFilterExpression: { spouseEmail: { $type: "string" } } });
 UserSchema.index({ spouseMobile: 1 }, { unique: true, sparse: true, partialFilterExpression: { spouseMobile: { $exists: true } } });
-UserSchema.index({ userId: 1 }, { unique: true });
 
 
 /* ---------------- PASSWORD HASH ---------------- */

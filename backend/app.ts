@@ -11,6 +11,7 @@ import passport from "./utils/google.fb.login.js"
 import session from 'express-session';
 import path from "path"; 
 import { fileURLToPath } from "url"; 
+import morgan from "morgan";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -54,6 +55,7 @@ const globalRateLimit = rateLimit({
 
 connectDb();
 // app.use(globalRateLimit);
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ origin: [process.env.FRONTEND_USER_LOCAL_URL, process.env.FRONTEND_ADMIN_LOCAL_URL, process.env.FRONTNED_ADMIN_PRODUCTION_URL, process.env.FRONTEND_USER_PRODUCTION_URL], credentials: true }))
@@ -99,8 +101,6 @@ app.use("/api/user/announcement", userAnnouncementRoutes);
 app.use("/api/user/suggestion", userSuggestionRoutes);
 app.use("/api/user/review", userReviewRoutes);
 app.use("/api/user/block", userBlockRoutes);
-app.use("/api/user/password", resetPasswordRoutes);
-
 
  // ==========================================
 // FRONTEND & ADMIN BUILD ROUTING LOGIC (NO-STAR CATCH-ALL)
@@ -116,10 +116,11 @@ app.use("/api/user/password", resetPasswordRoutes);
      return res.sendFile(path.join(adminBuildPath, "index.html"));
    }
 
-  return res.sendFile(path.join(userBuildPath, "index.html"));
+   return res.sendFile(path.join(userBuildPath, "index.html"));
  });
 
  // ==========================================
+
 
 const port = process.env.PORT || 5000;
 

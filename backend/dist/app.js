@@ -41,7 +41,6 @@ import userAnnouncementRoutes from "./routes/user/announcement.route.js";
 import userSuggestionRoutes from "./routes/user/suggestion.route.js";
 import userReviewRoutes from "./routes/user/review.route.js";
 import userBlockRoutes from "./routes/user/block.route.js";
-import resetPasswordRoutes from "./routes/user/resetPassword.route.js";
 const app = express();
 const globalRateLimit = rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -92,21 +91,18 @@ app.use("/api/user/announcement", userAnnouncementRoutes);
 app.use("/api/user/suggestion", userSuggestionRoutes);
 app.use("/api/user/review", userReviewRoutes);
 app.use("/api/user/block", userBlockRoutes);
-app.use("/api/user/password", resetPasswordRoutes);
 // ==========================================
 // FRONTEND & ADMIN BUILD ROUTING LOGIC (NO-STAR CATCH-ALL)
 // ==========================================
-// 1. दोनों बिल्ड्स के एसेट्स (CSS/JS) को सही से सर्व करने के लिए स्टैटिक फोल्डर डिक्लेअर करें
-app.use("/admin", express.static(path.join(__dirname, "admin_build")));
-app.use(express.static(path.join(__dirname, "user_build")));
-// 2. यूनिवर्सल मिडलवेयर जो बचे हुए सभी राउट्स को पकड़ कर कंडीशनली फ़ाइल भेजेगा
+const adminBuildPath = path.join(__dirname, "../admin_build");
+const userBuildPath = path.join(__dirname, "../user_build");
+app.use("/admin", express.static(adminBuildPath));
+app.use(express.static(userBuildPath));
 app.use((req, res) => {
-    // अगर यूज़र ने ब्राउज़र में /admin या /admin/login जैसी कोई रिक्वेस्ट की है
     if (req.path.startsWith("/admin")) {
-        return res.sendFile(path.join(__dirname, "admin_build", "index.html"));
+        return res.sendFile(path.join(adminBuildPath, "index.html"));
     }
-    // बाकी सभी सामान्य रिक्वेस्ट्स (जैसे /login, /profile) के लिए
-    return res.sendFile(path.join(__dirname, "user_build", "index.html"));
+    return res.sendFile(path.join(userBuildPath, "index.html"));
 });
 // ==========================================
 const port = process.env.PORT || 5000;
